@@ -1,0 +1,42 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: webapi-operator-qa
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "12"
+    kargo.akuity.io/authorized-stage: infrastructure:qa
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+
+  sources:
+    - repoURL: https://github.com/AaronStahley/webapi-operator.git
+      targetRevision: main
+      path: helm/webapi-operator
+      helm:
+        valueFiles:
+          - $values/manifests/webapi-operator-qa/values.yaml
+
+    - repoURL: https://github.com/AaronStahley/platform-gitops.git
+      targetRevision: main
+      ref: values
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: platform-operator-qa
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m

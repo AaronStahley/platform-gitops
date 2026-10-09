@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: payments-dev
+  labels:
+    domain: payments
+    environment: dev
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: payments-qa
+  labels:
+    domain: payments
+    environment: qa
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: payments-prod
+  labels:
+    domain: payments
+    environment: prod

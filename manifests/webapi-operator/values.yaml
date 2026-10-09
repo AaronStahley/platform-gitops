@@ -1,0 +1,48 @@
+# WebApi Operator Helm Values
+# Platform infrastructure configuration
+
+replicaCount: 1
+
+image:
+  repository: ghcr.io/aaronstahley/webapi-operator
+  pullPolicy: IfNotPresent
+  tag: 0.1.0
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 64Mi
+
+metrics:
+  enabled: true
+  port: 8080
+
+health:
+  port: 8081
+
+leaderElection:
+  enabled: true
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 65532
+  fsGroup: 65532
+
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+    - ALL
+  readOnlyRootFilesystem: true
+
+# Node selector for operator placement
+nodeSelector: {}
+
+# Tolerations for operator scheduling
+tolerations: []
+
+# Affinity rules for operator placement
+affinity: {}

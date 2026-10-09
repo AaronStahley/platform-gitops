@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: orders-project
+  namespace: argocd
+spec:
+  description: Orders team applications and resources
+
+  sourceRepos:
+  - 'git@github.com:AaronStahley/orders-gitops.git'
+  - 'https://github.com/AaronStahley/orders-gitops.git'
+
+  destinations:
+  - namespace: 'orders-*'
+    server: 'https://kubernetes.default.svc'
+  - namespace: 'argocd'
+    server: 'https://kubernetes.default.svc'
+
+  clusterResourceWhitelist: []
+
+  namespaceResourceWhitelist:
+  - group: ''
+    kind: '*'
+  - group: 'apps'
+    kind: '*'
+  - group: 'batch'
+    kind: '*'
+  - group: 'networking.k8s.io'
+    kind: '*'
+  - group: 'autoscaling'
+    kind: '*'
+  - group: 'argoproj.io'
+    kind: 'Application'

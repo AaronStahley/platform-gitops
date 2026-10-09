@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: orders-dev
+  labels:
+    domain: orders
+    environment: dev
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: orders-qa
+  labels:
+    domain: orders
+    environment: qa
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: orders-prod
+  labels:
+    domain: orders
+    environment: prod

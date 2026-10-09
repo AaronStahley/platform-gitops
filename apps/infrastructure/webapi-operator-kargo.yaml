@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: webapi-operator-kargo
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "14"  # After kargo (10) and webapi-operator instances (12)
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/AaronStahley/platform-gitops.git
+    targetRevision: main
+    path: manifests/webapi-operator-kargo
+    directory:
+      recurse: true
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: infrastructure
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

@@ -1,0 +1,16 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: ProjectConfig
+metadata:
+  name: infrastructure
+  namespace: infrastructure
+spec:
+  promotionPolicies:
+    - stageSelector:
+        name: dev
+      autoPromotionEnabled: true
+    - stageSelector:
+        name: qa
+      autoPromotionEnabled: false
+    - stageSelector:
+        name: prod
+      autoPromotionEnabled: false

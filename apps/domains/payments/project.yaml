@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: payments-project
+  namespace: argocd
+spec:
+  description: Payments team applications and resources
+
+  sourceRepos:
+  - 'git@github.com:AaronStahley/payments-gitops.git'
+  - 'https://github.com/AaronStahley/payments-gitops.git'
+
+  destinations:
+  - namespace: 'payments-*'
+    server: 'https://kubernetes.default.svc'
+  - namespace: 'payments'
+    server: 'https://kubernetes.default.svc'
+  - namespace: 'argocd'
+    server: 'https://kubernetes.default.svc'
+
+  clusterResourceWhitelist:
+  - group: 'kargo.akuity.io'
+    kind: 'Project'
+
+  namespaceResourceWhitelist:
+  - group: ''
+    kind: '*'
+  - group: 'apps'
+    kind: '*'
+  - group: 'batch'
+    kind: '*'
+  - group: 'networking.k8s.io'
+    kind: '*'
+  - group: 'autoscaling'
+    kind: '*'
+  - group: 'argoproj.io'
+    kind: 'Application'
+  - group: 'kargo.akuity.io'
+    kind: '*'
+  - group: 'platform.aaronstahley.dev'
+    kind: 'WebApi'

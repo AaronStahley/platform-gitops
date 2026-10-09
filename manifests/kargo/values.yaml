@@ -1,0 +1,57 @@
+# Kargo Helm Values
+# Platform-level configuration for Kargo deployment pipeline
+
+controller:
+  enabled: true
+  replicas: 1
+
+api:
+  enabled: true
+  replicas: 1
+  adminAccount:
+    # bcrypt hash of "admin" - for POC only!
+    # Generated with: python3 -c "import bcrypt; print(bcrypt.hashpw(b'admin', bcrypt.gensalt(rounds=10)).decode())"
+    passwordHash: "$2b$10$r50XhCWHmLxAc.1kXywwz.QDu8nEQW7rMuhQcjSAMwF/k2EmZZQeW"
+    tokenSigningKey: "local-kind-demo-only-not-a-secret"
+
+ui:
+  enabled: true
+  replicas: 1
+  service:
+    type: ClusterIP
+    port: 80
+
+# ArgoCD integration for automatic application sync
+argocd:
+  enabled: true
+  # Kargo will watch ArgoCD applications and trigger syncs after promotions
+  watchArgocdNamespace: argocd
+
+# RBAC configuration
+rbac:
+  installClusterRoles: true
+  installClusterRoleBindings: true
+
+# Git integration settings
+git:
+  # Commit author for automated Git updates
+  author:
+    name: Kargo
+    email: kargo@gitops.local
+  # Signing disabled for POC (enable with GPG key for production)
+  signing:
+    enabled: false
+
+# Image repository configuration
+image:
+  repository: ghcr.io/akuity/kargo
+  pullPolicy: IfNotPresent
+
+# Resource limits for POC environment
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi

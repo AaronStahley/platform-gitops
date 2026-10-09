@@ -1,0 +1,50 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: dev
+  namespace: infrastructure
+  annotations:
+    kargo.akuity.io/color: green
+spec:
+  requestedFreight:
+    - origin:
+        kind: Warehouse
+        name: webapi-operator
+      sources:
+        direct: true
+
+  promotionTemplate:
+    spec:
+      steps:
+        - uses: git-clone
+          config:
+            repoURL: https://github.com/AaronStahley/platform-gitops.git
+            checkout:
+              - branch: main
+                path: ./repo
+
+        - uses: yaml-update
+          config:
+            path: ./repo/manifests/webapi-operator-dev/values.yaml
+            updates:
+              - key: image.tag
+                value: ${{ imageFrom("ghcr.io/aaronstahley/webapi-operator").Tag }}
+
+        - uses: git-commit
+          config:
+            path: ./repo
+            message: |
+              Promote webapi-operator to dev
+
+              Image: ${{ imageFrom("ghcr.io/aaronstahley/webapi-operator").Tag }}
+
+        - uses: git-push
+          config:
+            path: ./repo
+            targetBranch: main
+
+        - uses: argocd-update
+          config:
+            apps:
+              - name: webapi-operator-dev
+                namespace: argocd

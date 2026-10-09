@@ -1,0 +1,18 @@
+image:
+  repository: ghcr.io/aaronstahley/webapi-operator
+  pullPolicy: IfNotPresent
+  tag: 0.1.0
+
+namespaceSelector: "environment=dev"
+
+leaderElection:
+  enabled: true
+  id: "webapi-operator-dev.aaronstahley.dev"
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 64Mi
