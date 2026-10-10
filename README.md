@@ -44,15 +44,15 @@ This repository demonstrates a multi-tenant GitOps structure with domain-driven 
 ### ArgoCD Projects (RBAC Boundaries)
 
 **payments-project:**
-- Restricts Payments domain to `payments-*` namespaces only
-- Can only pull from `git@github.com:AaronStahley/payments-gitops.git`
-- Blocks cluster-scoped resources (namespaces created by platform-gitops)
+- Restricts Payments domain to `payments-*` namespaces (plus its `payments` Kargo project namespace)
+- Can only pull from `https://github.com/AaronStahley/payments-gitops.git`
+- The only cluster-scoped resource it may create is its own Kargo `Project`; namespaces are created by platform-gitops
 - Prevents accidental deployment to other domains (e.g., Orders)
 
 **orders-project:**
-- Restricts Orders domain to `orders-*` namespaces only
-- Can only pull from `git@github.com:AaronStahley/orders-gitops.git`
-- Blocks cluster-scoped resources (namespaces created by platform-gitops)
+- Restricts Orders domain to `orders-*` namespaces (plus its `orders` Kargo project namespace)
+- Can only pull from `https://github.com/AaronStahley/orders-gitops.git`
+- The only cluster-scoped resource it may create is its own Kargo `Project`; namespaces are created by platform-gitops
 - Prevents accidental deployment to other domains (e.g., Payments)
 
 **Benefits:**
@@ -121,7 +121,7 @@ spec:
       helm:
         valueFiles:
           - $values/manifests/myapp/values.yaml
-    - repoURL: git@github.com:AaronStahley/platform-gitops.git
+    - repoURL: https://github.com/AaronStahley/platform-gitops.git
       targetRevision: main
       ref: values
   destination:
@@ -166,7 +166,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: git@github.com:AaronStahley/platform-gitops.git
+    repoURL: https://github.com/AaronStahley/platform-gitops.git
     targetRevision: main
     path: manifests/myapp
   destination:
