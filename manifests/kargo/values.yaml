@@ -11,6 +11,9 @@ api:
   adminAccount:
     # bcrypt hash of "admin" - for POC only!
     # Generated with: python3 -c "import bcrypt; print(bcrypt.hashpw(b'admin', bcrypt.gensalt(rounds=10)).decode())"
+    # Demo-only credentials for a throwaway local kind cluster: admin/admin and a
+    # placeholder signing key. Never reuse these; a real install sources both from a
+    # secret store.
     passwordHash: "$2b$10$r50XhCWHmLxAc.1kXywwz.QDu8nEQW7rMuhQcjSAMwF/k2EmZZQeW"
     tokenSigningKey: "local-kind-demo-only-not-a-secret"
 
