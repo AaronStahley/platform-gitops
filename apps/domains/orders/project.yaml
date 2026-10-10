@@ -13,10 +13,14 @@ spec:
   destinations:
   - namespace: 'orders-*'
     server: 'https://kubernetes.default.svc'
+  - namespace: 'orders'
+    server: 'https://kubernetes.default.svc'
   - namespace: 'argocd'
     server: 'https://kubernetes.default.svc'
 
-  clusterResourceWhitelist: []
+  clusterResourceWhitelist:
+  - group: 'kargo.akuity.io'
+    kind: 'Project'
 
   namespaceResourceWhitelist:
   - group: ''
@@ -31,3 +35,7 @@ spec:
     kind: '*'
   - group: 'argoproj.io'
     kind: 'Application'
+  - group: 'kargo.akuity.io'
+    kind: '*'
+  - group: 'platform.aaronstahley.dev'
+    kind: 'WebApi'
