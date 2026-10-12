@@ -7,7 +7,7 @@ Platform team GitOps repo, synced by Argo CD. It holds the two root app-of-apps 
 - `apps/infrastructure/`: platform Applications (namespaces, cert-manager, Kargo, Kargo RBAC, Grafana, webapi-operator per env, the operator's Kargo project). Ordered with sync waves. Target of the `infra-apps` root app.
 - `apps/domains/<domain>/`: `project.yaml` (AppProject = tenant boundary: `<domain>-*` namespaces, own repo only, no cluster-scoped resources except its Kargo `Project`) and `apps.yaml` (domain app-of-apps pointing at `<domain>-gitops`). Target of the `domains-apps` root app (recurse).
 - `manifests/`: Helm values and plain manifests referenced by `apps/`. `webapi-operator-{dev,qa,prod}/values.yaml` pin the operator image tag and namespace selector.
-- `docs/`: `MULTI_REPO_SETUP.md`, plus architecture and decision docs as they land.
+- `docs/`: `decisions.md` (design decisions), `MULTI_REPO_SETUP.md` (domain repos), `argocd-guide.md` (Argo CD layout). `README.md` is the project front page: overview, architecture diagram and what the platform does.
 
 ## Build, test, run
 
